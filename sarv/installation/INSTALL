@@ -29,7 +29,7 @@ II. FILES
 
 III. DATABASE
 By now you have specified connections settings in local_settings.py.
-There are two ways to populate database with necessary data: via Django or with sql import.
+There are two ways to populate database with necessary data: via Django manager.py (A) or with sql import (B).
 
 1. Create system database layout. System has two databases - one for Django system tables, the other for Sarv as well as content tables.
 
@@ -52,7 +52,7 @@ Fix: Inside folder "django/contrib/auth/migrations/" comment out operations list
 "python3 ./manage.py migrate --database=sarv"
 NB! Ends with error (ContentType error). Database seems to be complete though and working properly.
 
-1B.1 Using sarv_structure.sql file provided in installation folder to import sarv database structure
+1B.2 Using sarv_structure.sql file provided in installation folder to import sarv database structure
 
 IV. INSERTING DATA
 
