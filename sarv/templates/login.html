@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+    	<link rel="stylesheet" type="text/css" href="{{ PUBLIC_STATIC_URL }}css/style.css" />
+    </head>
+    <body>
+		<div class="msg-box">
+            <span style="font-weight: bold;">SARV: Eesti geokogude infosüsteem</span> <br /><br />
+	   		{% if login_as %}
+	   		<div class="content">
+	   			<div style="padding:10px">
+	   				kasutajanimi: <br />
+	   				<input type="text" id="input_username" />
+	   			</div>
+	   		</div>
+	   		{% endif %}
+			<div>
+		   		Autentimine ID-kaardiga
+	   		</div>
+	   		<div>
+	   			<button onclick="login()">Sisenen</button>
+	   		</div>
+		</div>
+
+    <script type="text/javascript">
+	function login() {
+		{% if login_as %}var username = document.getElementById('input_username').value;{% endif %}
+		window.location='/login'{% if login_as %}+'?username='+username{% endif %};
+		{% if login_as %}username=null;{% endif %}
+	};
+	var u=window.location,
+		p=u.href.split(u.hostname)[1];
+	if(p.replace('/','').length > 0)
+		window.close();
+	</script>
+    </body>
+</html>

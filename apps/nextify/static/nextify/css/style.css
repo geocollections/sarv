@@ -1,0 +1,292 @@
+.grey {
+    color: #bababa !important;
+}
+
+body {
+    background: #57634C url("/static/images/bg.png") repeat-x;
+	/*background-image: -moz-linear-gradient(0% 100% 90deg,#57634C, #C0C0C0);*/ /* for firefox 3.6+ */
+}
+
+.x-panel-body {
+	background-color: #efefef;
+}
+
+/*.x-toolbar-ct {
+	background-color: #aaaaaa;
+}*/
+
+/* Icons */
+/*
+.page-add {
+	background-image: url("/static/images/page_add.png") !important;
+}
+
+.page-delete {
+	background-image: url("/static/images/page_delete.png") !important;
+}
+
+.page-save {
+	background-image: url("/static/images/page_save.png") !important;
+}
+
+.page-save-as {
+	background-image: url("/static/images/page_save.png") !important;
+}
+
+.row-add {
+	background-image: url("/static/images/add.png") !important;
+}
+
+.row-delete {
+	background-image: url("/static/images/delete.png") !important;
+}
+
+.refresh {
+	background-image: url("/static/images/arrow_refresh.png") !important;
+}
+
+.search {
+	background-image: url("/static/images/magnifier.png") !important;
+}
+
+.previous {
+	background-image: url("/static/images/resultset_previous.png") !important;
+}
+
+.next {
+	background-image: url("/static/images/resultset_next.png") !important;
+}
+/* Icons */
+/*
+.page-add {
+	background-image: url("/static/images/page_add.png") !important;
+}
+
+.page-delete {
+	background-image: url("/static/images/page_delete.png") !important;
+}
+
+.page-save {
+	background-image: url("/static/images/page_save.png") !important;
+}
+
+.page-save-as {
+	background-image: url("/static/images/page_save.png") !important;
+}
+*/
+.row-add {
+	background-image: url("/static/images/add.png") !important;
+}
+
+.row-delete {
+	background-image: url("/static/images/delete.png") !important;
+}
+/*
+.refresh {
+	background-image: url("/static/images/arrow_refresh.png") !important;
+}
+*/
+.search {
+	background-image: url("/static/images/magnifier.png") !important;
+}
+/*
+.previous {
+	background-image: url("/static/images/resultset_previous.png") !important;
+}
+
+.next {
+	background-image: url("/static/images/resultset_next.png") !important;
+}
+*/
+.disabled {
+	background: transparent;
+	border: none;
+	color: gray;
+}
+
+.user {
+	background: url("/static/images/user.png") no-repeat left center;
+	padding-left: 20px;
+}
+
+.database {
+	background: url("/static/images/database.png") no-repeat left center;
+	padding-left: 20px;
+}
+
+/* images in sprite */
+.add, .delete, .page-add, .page-copy, .page-delete, .page-save, .page-save-as, .user, .next, .previous, .database, .refresh, .auth, .application_form, .application_view_columns, .camera{
+	background: url(/static/images/sprites.png) no-repeat;
+}
+/*
+.add{
+	background-position: -1px -1px ;
+	width: 16px;
+	height: 16px;
+}
+
+.delete{
+	background-position: -18px -1px ;
+	width: 16px;
+	height: 16px;
+}
+*/
+.page-add{
+	background-position: -36px -2px ;
+	width: 16px;
+	height: 16px;
+}
+
+.page-copy{
+	background-position: -55px -2px ;
+	width: 16px;
+	height: 16px;
+}
+
+.page-delete{
+	background-position: -71px -65px ;
+	width: 16px;
+	height: 16px;
+}
+
+.page-save{
+	background-position: -75px -3px ;
+	width: 16px;
+	height: 16px;
+}
+
+.page-save-as{
+	background-position: -75px -3px ;
+	width: 16px;
+	height: 16px;
+}
+
+.user{
+	background-position: -3px -21px ;
+	width: 16px;
+	height: 16px;
+	padding-left:20px;
+}
+
+.next{
+	background-position: -20px -21px ;
+	width: 16px;
+	height: 16px;
+}
+
+.previous{
+	background-position: -35px -22px ;
+	width: 16px;
+	height: 16px;
+}
+
+.database{
+	background-position: -52px -24px ;
+	width: 16px;
+	height: 16px;
+}
+
+.refresh{
+	background-position: -72px -26px ;
+	width: 16px;
+	height: 16px;
+}
+
+.auth{
+	background-position: -26px -46px ;
+	width: 32px;
+	height: 32px;
+}
+
+.application_form{
+	background-position: -2px -45px ;
+	width: 16px;
+	height: 16px;
+}
+
+.application_view_columns{
+	background-position: -71px -46px ;
+	width: 16px;
+	height: 16px;
+}
+
+.camera{
+	background-position: -1px -64px ;
+	width: 16px;
+	height: 16px;
+}
+
+.disabled {
+	background: transparent;
+	border: none;
+	color: gray;
+}
+
+.user {
+	background: url("/static/images/user.png") no-repeat left center;
+	padding-left: 20px;
+}
+
+.database {
+	background: url("/static/images/database.png") no-repeat left center;
+	padding-left: 20px;
+}
+*/
+
+
+
+/* 
+ * overrinding some ext styles
+ */
+.x-form-item-label {
+font-size: 8pt; 
+color:#666;
+/*text-align: right;*/
+min-width: 85px;
+max-width: 85px;
+}
+
+.x-field-label-cell {
+min-width: 85px;
+max-width: 85px;
+}
+
+
+.x-form-field {
+color:#000;
+/*
+font-weight: bold;
+border: none;
+border-bottom: 1px dashed #000;
+background: none;
+*/
+}
+
+/*
+.x-panel-body {
+background-color:#fff;
+}
+* */ 
+#item-toolbar-body {
+background-color:#999;
+}
+.x-btn-default-small {
+background: none;
+background-color:transparent;
+}
+
+#form_grid_grid_drillcore {
+margin: 0 5px;
+}
+
+input[name=date_added], input[name=date_changed], input[name=timestamp], input[name=id] { 
+font-size: 11px;   
+}
+
+.resizableTextArea {
+	resize:vertical;/*both;*/
+	min-height:100px;
+}
+
+
+.bold { font-weight: bold; font-size: 1.2em;}

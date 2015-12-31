@@ -1,0 +1,72 @@
+/*
+ * Ext JS Library 2.2
+ * Copyright(c) 2006-2008, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://extjs.com/license
+ */
+
+.images-view .x-panel-body{
+	background: white;
+	font: 11px Arial, Helvetica, sans-serif;
+}
+.images-view .thumb{
+    width: 200;
+    height: 200;
+	padding: 6px;
+    position: relative;
+    display: table-cell; /* not in ie7 */
+    vertical-align: middle;
+    -moz-border-radius: 6px;
+	border-radius: 6px;
+	background: #dddddd;
+}
+.images-view .thumb img{
+    display: block;
+    margin: 0 auto;
+}
+.images-view .thumb-wrap{
+    width: 210;
+    height: 220;
+	float: left;
+    position: relative;
+	margin: 4px;
+	margin-right: 0;
+	padding: 5px;
+}
+.images-view .thumb-text{
+    position: absolute;
+    bottom: 2px;
+	display: block;
+	overflow: hidden;
+	text-align: center;
+    width: 200px;
+}
+
+.images-view .x-view-over .thumb {
+	padding: 5px;
+	border: 1px solid #99bbe8;
+}
+
+.images-view .x-view-selected .thumb {
+	padding: 5px;
+	border: 1px solid #99bbe8;
+    background: #eff5fb;
+}
+
+.images-view .loading-indicator {
+	font-size:11px;
+	background-image:url('../../resources/images/default/grid/loading.gif');
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:20px;
+	margin:10px;
+}
+
+.images-view p {
+    text-align: center;
+}
+
+.images-view .x-editable {
+	padding-top: 4px;
+}

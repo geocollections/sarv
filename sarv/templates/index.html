@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/> 
+    <title>SARV2</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/index.css" />
+</head>
+
+<body>
+
+<div id="top-menu">
+  <div id="top-menu-left-container">
+	  <strong>TEST: Geokogude infosüsteem SARV ver. 2 (2015-04)</strong> | 
+	  <strong><a href="http://geokogud.info" style="color:#fff;" target="_blank">avalik portaal</a></strong>
+  </div>  
+  <div id="top-menu-right-container">
+    <div class="top-menu-user">Kasutaja: <b>{{sarvuser}}</b></div>
+    <div class="top-menu-db">Andmebaas: <b>{{database}}</b></div>
+    <div class="top-menu-spacer">&nbsp;</div>
+  	<button class="top-menu-logout" onclick="if('undefined' !== typeof p){for(var i in p){if(p[i]!=null){p[i].close();}}}p=null;window.location='logout';">Logi välja</button>
+  </div>
+</div>
+
+<div id="main-menu-container">
+	<div id="main-menu">
+		{% load main_menu %} {% main_menu %}
+	</div>
+</div>
+
+<div id="messagebox">
+	<div style="min-width:150px;padding:5px">
+		<span id="sarvissue_count">{{msg_n}}</span> sõnum{%ifequal msg_n 1%}{%else%}it{%endifequal%}
+	  {%if msg_n > 0 %}| <a href="#" id="messagebox-button">loe</a>{% endif %} 
+	  	| <a href="#" id="messagebox-new-btn">lisa</a>
+	</div>
+	<ul id="messagebox-list"></ul>
+</div>
+
+<div id="modal-background"></div>
+
+<table id="sarvissue-add-form">
+	<tbody>
+		<tr><td>Kellele </td><td><select class="sarvissue-form" name="reported_to">{% for user in users %}<option value="{{user}}">{{user}}</option>{% endfor %}</select></td></tr>
+		<tr><td>Pealkiri</td><td><input class="sarvissue-form" type="text" name="title" /></td></tr>
+		<tr><td>Tekst </td><td><textarea class="sarvissue-form" name="description"></textarea></td></tr>
+		<tr><td>Viide </td><td><input class="sarvissue-form" type="text" name="url" /></td></tr>
+		<tr><td colspan=2><button id="sarvissue-add-btn">Lisa</button>
+		</td></tr>
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	var msg={
+			n_msg: 0,
+			msg_b_dom: null,
+			msg_dom: null,
+			open_btn_dom: null,
+			add_form_dom: null,
+			add_btn_dom: null,
+			init: function() {
+				var t_=this,
+					e_o={'msg_b_dom': 'messagebox-button',
+						'msg_dom': 'messagebox-list',
+						'open_btn_dom': 'messagebox-new-btn',
+						'add_form_dom': 'sarvissue-add-form',
+						'add_btn_dom': 'sarvissue-add-btn',
+						'modal_dom': 'modal-background'};
+				for(var i in e_o) {
+					try{
+						this[i]=document.getElementById(e_o[i]);
+					}catch(e){
+						console.log(e);
+					}
+				}
+				
+				if(this.msg_b_dom!=null) {
+					this.msg_b_dom.addEventListener('click', 
+						function(){
+							if(t_.msg_dom.style.display=='block')
+								t_.loadMessages()
+							else
+								t_.loadMessages()
+					});
+				}
+				
+				this.modal_dom.addEventListener(
+					'click', function() {
+						this.style.display='none';
+						t_.add_form_dom.style.display='none';
+					}
+				);
+				
+				this.open_btn_dom.addEventListener(
+					'click', function(){
+						var d=t_.add_form_dom.style.display;
+						t_.add_form_dom.style.display=d=='block'?'none':'block';
+						t_.modal_dom.style.display=d=='block'?'none':'block';
+				});
+				
+				this.add_btn_dom.addEventListener('click',
+					function(){
+						var d={},
+							f=t_.add_form_dom
+								.getElementsByClassName(
+								'sarvissue-form');
+						for(var i=f.length;i--;)
+							d[f[i].name]=f[i].value;
+						t_.add(d);
+				});
+			},
+			finit: function() {
+				if(this.msg_b_dom!=null)
+					this.msg_b_dom.removeEventListener('click');
+				//this.msg_x_dom.removeEventListener('click');
+				
+				this.open_btn_dom.removeEventListener('click');
+				this.add_btn_dom.removeEventListener('click');
+			},
+			loadMessages: function() {
+				if(!msg)
+					return;
+				
+				if(this.n_msg < 1) {
+					this.get_all();
+				} else {
+					this.show();
+				}
+			},
+			get_all: function() {
+				var x = new XMLHttpRequest(),
+					t_= this;
+				x.open('GET', 'get_user_messages', true);
+				x.onreadystatechange = function() {
+					if(this.readyState == 4 && this.status==200) {
+						var m=JSON.parse(this.response),
+							html='';
+						t_.n_msg=m.length;
+						if(m.length > 0) {
+							for(var i=m.length;i--;) {
+								html='<li>'+m[i][2]+' <strong>'+
+									m[i][3]+'</strong>: '+
+									'<a href="issue/'+m[i][1]+'" target="_tab">'+
+									m[i][0]+'</a> '+
+									m[i][4]+
+									' <span class="sarvissue-checkbox" value="'+m[i][1]+'"> [ märgi loetuks ] </span></li>'+
+									html;
+							}
+							t_.msg_dom.innerHTML=html;
+							t_.show();
+							
+							var s=document.getElementsByClassName('sarvissue-checkbox');
+							for(var i=s.length;i--;){
+								s[i].addEventListener('click', function(){
+									//@TODO: removeeventlistener
+									var y=new XMLHttpRequest(),
+										th_=this;
+									y.onreadystatechange = function(){
+										if(this.readyState==4){
+											th_.parentNode.remove();
+											var c=document.getElementById('sarvissue_count'),
+												n=parseInt(c.innerHTML);
+											c.innerHTML=n-1;
+										}
+									}
+									y.open('GET', 'user_messages_mark_resolved?idm='+this.value, true);
+									y.send(null);
+									
+								});
+							}
+						} else {
+							t_.hide();
+							return;
+						}
+					} else
+						return;
+				}
+				x.send(null);
+			},
+			add: function(d) {
+				var x = new XMLHttpRequest(),
+					t_=this,
+					p=function(){
+						var a=[];
+						for(var i in d)
+							a.push(i+'='+encodeURI(d[i]));
+						return a.join('&');
+					};
+				x.open('GET','user_messages_add?'+p(), false);
+				x.onreadystatechange = function() {
+					if(this.readyState==4 && this.status==200) {
+						if(this.response=='{}') {
+							alert('Salvestatud');
+							f=t_.add_form_dom
+								.getElementsByClassName(
+								'sarvissue-form');
+						for(var i=f.length;i--;)
+							f[i].value='';
+							document.getElementById('modal-background').style.display='none';
+							document.getElementById('sarvissue-add-form').style.display='none';
+						}
+					}
+				}
+				x.send();
+			},
+			show: function() {
+				//this.msg_x_dom.style.display='block';
+				//this.msg_dom.style.display='block';
+				//this.msg_b_dom.style.display='none';
+			},
+			hide: function() {
+				//this.msg_x_dom.style.display='none';
+				//this.msg_dom.style.display='none';
+				//this.msg_b_dom.style.display='block';
+			}
+		};
+	msg.init();
+</script>
+<!-- -->
+
+<script type="text/javascript">
+;(function(window,document){
+//disable browser-specific session persistency between different browser sessions
+var url = window.location,
+	t = url.hash.replace('#',''),
+	h = url.href.slice(0,url.href.indexOf("#"));
+
+window.onbeforeunload = function() {
+	if('undefined' !== typeof p) {
+		for(var i in p)
+			if(p[i]!=null)
+				p[i].close();
+		p = null;
+	}
+	var x = new XMLHttpRequest();
+	x.onreadystatechange = function() {
+	    if (this.readyState == 4)
+	        return;
+	}
+	x.open('GET',h+(h.slice(-1)=='/'?'':'/')+"logout",false);
+	x.send(null);
+}
+
+})(window,document);
+</script>
+
+</body>
+</html>

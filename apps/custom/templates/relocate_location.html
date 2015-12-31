@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<link rel="stylesheet" href="/static/jquery-ui-1.11.1.custom/jquery-ui.css" />
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/jquery-ui-1.11.1.custom/jquery-ui.min.js"></script>
+</head>
+<body>
+{% if move %}
+<table>
+	<tr style="text-decoration:underline"><td>Nimi</td><td>Praeguses kastis</td><td>Uues kastis</td></tr>
+	{% for row in move %}<tr><td>{{row.0}}</td><td>{{row.1}}</td><td>{{row.2}}</td></tr>{% endfor %}
+</table>
+
+<form method="get" action="/relocate_location">
+<input type="hidden" name="location_old" value="{{get.location_old}}" />
+<input type="hidden" name="location_new" value="{{get.location_new}}" />
+<input type="hidden" name="confirmed" value="true" />
+<input type="submit" value="Tõsta ümber" /> 
+</form>
+<button onclick="window.history.go(-1)">Tagasi</button>
+<!--  -->
+{% elif moved %}
+Tõsteti ümber:
+<table>
+<tr style="text-decoration:underline"><td>Nimi</td><td>Liigutatud kirjete arv</td></tr>
+{% for row in moved %}<tr><td>{{row.0}}</td><td>{{row.1}}</td></tr>{% endfor %}
+</table>
+<button onclick="window.location='/relocate_location'">Tagasi</button>
+{% else %}
+
+<form method="get" action="/relocate_location">
+
+<input name="location_old" id="location_old" />
+<!-- <select name="location_old">
+	{# for location in old_locations %}<option value="{{location}}">{{location}}</option>{% endfor #}
+</select> -->
+
+<input name="location_new" id="location_new" />
+
+<!-- <select name="location_new">
+	{# for location in new_locations %}<option value="{{location}}">{{location}}</option>{% endfor #}
+</select> -->
+
+<input type="submit" value="Edasi" />
+
+</form>
+
+<script type="text/javascript">
+$(function(){
+	var maxItems=10,
+		msg='<sub>Esimesed #m kokku #n kirjest</sub>',
+		locations={{locations|safe}},
+		menuHandler=function(request, response) {
+        	var results = $.ui.autocomplete
+        			.filter(locations, request.term);
+        	response(results.slice(0, maxItems));
+        	if(results.length > maxItems) {
+	        	$('.ui-autocomplete')
+	        		.append(msg
+	        			.replace('#m', maxItems)
+	        			.replace('#n',results.length)
+	        		);
+        	}
+		};
+	$('#location_old').autocomplete({source: menuHandler});
+	$('#location_new').autocomplete({source: menuHandler});
+});
+</script>
+{% endif %}
+
+
+</body>
+</html>

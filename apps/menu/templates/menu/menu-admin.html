@@ -1,0 +1,97 @@
+{% block not_django_admin_context_1 %}
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+{% endblock %}
+
+{% block extrahead %} {# from admin/base.html #}
+<link rel="stylesheet" href="/static/admin/css/jquery-ui.css" />
+<script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+<script>window.jQuery||document.write('<script src="/static/admin/js/jquery.min.js"><\/script>')</script>
+<!-- <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script> -->
+<script src="/static/admin/js/jquery-ui.js"></script>
+<script>window.jQuery||document.write('<script src="/static/admin/js/jquery-ui.js"><\/script>')</script>
+
+<script src="static/menu.js"></script>
+{% endblock %}
+
+{% block not_django_admin_context_2 %} <title> {% endblock %}
+{% block title %}Menu administration{% endblock %}
+{% block not_django_admin_context_3 %}
+</title>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+{% endblock %}
+
+{% block content %}
+
+<style>
+<!--
+#content-main {
+	margin:10px;
+}
+
+.menu {
+	/**/
+	width:auto;
+}
+
+.menu-column {
+	display:inline-block;
+	vertical-align:top;
+	width:200px;
+}
+
+.sortable-column {
+}
+
+.menu-row {
+	padding:5px;
+	margin:1px;
+	border:1px solid #aaa;
+	background-color:#efefef;
+}
+
+.deactivated {
+	background-color:#fefefe;
+	color:#aaa;
+}
+
+h3 {
+	font-weight:normal;
+	font-size:12px;
+}
+
+.link {
+	cursor:pointer;
+}
+-->
+</style>
+
+{% block not_django_admin_context_4 %}<body>{% endblock %}
+<div id="site-messages" style="display:none;position:fixed;top:20px;left:20px;">
+</div>
+
+<div id="content-main">
+    <div style="display:inline-block;">
+        <div>Lisa tulp</div>
+        <input type="text" size="25" />
+        <button onclick="menu.action('set_column', {name: $(this).prev('input').val(), num_columns: {{ num_columns }} })">Add</button>
+    </div>
+    <div style="margin-bottom:20px;margin-left:20px;display:inline-block;">
+        <div>Lisa lehekülg</div>
+        <input type="text" size="25" />
+        <button onclick="menu.action('set_row', {name: $(this).prev('input').val()})">Add</button>
+    </div>
+    
+	<div class="menu">
+		{% include "menu/menu-admin_list.html" %}
+	</div>
+</div>
+{% endblock %}
+
+{% block not_django_admin_context_5 %}
+</body>
+</html>
+{% endblock %}

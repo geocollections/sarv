@@ -1,0 +1,32 @@
+
+{% for kc,column in menu_list.items %}
+	<div class="menu-column" id="menucolumn-{{ column.1.column }}">
+		<strong>{{ column.0.name }}</strong> 
+        <span class="link" onclick="menu.action('delete_column', {column:{{ kc }}})">[x]</span>
+        <div class="sortable-column" style="min-height:50px;" id="sortable-column-{{ kc }}">
+            {% for kr,item in column.items %}
+            {% if forloop.first %}{% else %}
+	        <div class="menu-row{% if item.active == "N" %} deactivated {% endif %}{% if item.active == 'N' %} ui-state-disabled{% endif %}" id="menuitem-{{ item.id }}-{{ item.column }}-{{ item.row }}">
+	        	<span style="cursor:move">{{ item.name }}</span>
+	         	<div style="text-align:right;width:100%;margin-top:2px"><strong><sub>
+	         		<span class="link"  onclick="menu.toggle({{ item.page_id }})">[ed]</span>
+	         		<!-- 
+	         		{% if item.active == "Y" %}
+	         			<span class="link do-deactivate" onclick="action('set_status',{id:{{ item.id }},current_status:'{{ item.active }}'})">[deact]</span>
+	         		{% else %}
+	         			<span class="link do-activate" onclick="action('set_status',{id:{{ item.id }},current_status:'{{ item.active }}',column:{{item.column}},row:{{item.row}},page_id:{{item.page_id}} })">[act]</span>
+	         	    {% endif %} -->
+
+	         		<span class="link do-delete-menuitem" onclick="menu.action('delete_row',{id:{{ item.page_id }}});">[x]</span>
+	         	</sub></strong></div>
+	         	<div style="display:none" id="do-menuitem-edit-{{ item.page_id }}">
+	         		<input type="text" value="{{item.url}}" name="url" />
+	         		<textarea name="name" rows="2" cols="20">{{ item.name }}</textarea>
+	         		
+	         		<button onclick="menu.action('set_update_row', {id:{{ item.page_id }},name:$(this).siblings('textarea').val(),url:$(this).siblings('input').val()})">Update</button>
+	         	</div>
+	        </div>
+			{% endif %}{% endfor %}
+		</div>
+	</div> 
+{% endfor %}

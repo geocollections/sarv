@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.pyo
+apps/nextify/config.py
+sarv/local_settings.py

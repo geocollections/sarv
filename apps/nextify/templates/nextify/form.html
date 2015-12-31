@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<!----><script type="text/javascript">b=(new Date()).getTime();</script><!---->
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="static/js/Sarv/build/production/SarvForm/resources/SarvForm-all.css" />
+<!-- link rel="stylesheet" type="text/css" href="static/css/style.css" /> --> 
+
+<style type="text/css">
+.grey{color:#bababa!important}body{background:#57634C url(/static/images/bg.png) repeat-x}.x-panel-body{background-color:#efefef}.row-add{background-image:url(/static/images/add.png)!important}.row-delete{background-image:url(/static/images/delete.png)!important}.search{background-image:url(/static/images/magnifier.png)!important}.add,.application_form,.application_view_columns,.auth,.camera,.database,.delete,.next,.page-add,.page-copy,.page-delete,.page-save,.page-save-as,.previous,.refresh,.user{background:url(/static/images/sprites.png) no-repeat}.page-add{background-position:-36px -2px;width:16px;height:16px}.page-copy{background-position:-55px -2px;width:16px;height:16px}.page-delete{background-position:-71px -65px;width:16px;height:16px}.page-save,.page-save-as{background-position:-75px -3px;width:16px;height:16px}.user{width:16px;height:16px}.next{background-position:-20px -21px;width:16px;height:16px}.previous{background-position:-35px -22px;width:16px;height:16px}.database{width:16px;height:16px}.refresh{background-position:-72px -26px;width:16px;height:16px}.auth{background-position:-26px -46px;width:32px;height:32px}.application_form{background-position:-2px -45px;width:16px;height:16px}.application_view_columns{background-position:-71px -46px;width:16px;height:16px}.camera{background-position:-1px -64px;width:16px;height:16px}.disabled{background:0 0;border:none;color:gray}.user{background:url(/static/images/user.png) no-repeat left center;padding-left:20px}.database{background:url(/static/images/database.png) no-repeat left center;padding-left:20px}*/ .x-form-item-label{font-size:8pt;color:#666;min-width:85px;max-width:85px}.x-field-label-cell{min-width:85px;max-width:85px}.x-form-field{color:#000}#item-toolbar-body{background-color:#999}.x-btn-default-small{background:0 0;background-color:transparent}#form_grid_grid_drillcore{margin:0 5px}input[name=date_added],input[name=date_changed],input[name=id],input[name=timestamp]{font-size:11px}.resizableTextArea{resize:vertical;min-height:100px}
+body{overflow-x:hidden;overflow-y:hidden;overflow:hidden}html{overflow:-moz-scrollbars-vertical}.form-id-field{font-size:30px!important;height:50px}#page-messagebox{position:fixed;top:0px;left:0px;display:none}#page-messagebox-close{position:absolute;top:0;right:5px;cursor:pointer}#page-messagebox-inner{margin:10px;font-size:14px}#page-loader-mask{width:100%;height:100%;position:absolute;top:0px;left:0px;background-color:#fff;opacity:.5;/*display:none*/}#page-loader-mask-inner{position:fixed;top:49%;left:49%;width:120px;height:20px;opacity:1}
+.sarv-url-combo .x-form-field {background-color:#ffb;background-image:none;}/*readonly to invisible:*/.x-form-field{border-width: 1px;border-style: solid;border-color:rgb(181, 184, 200);}.x-form-text-wrap-default{border:0}input[readonly="readonly"]{color:#999;border:0px;background:none;background-color:none}/*/readonly to invisible*/
+.x-form-radio {border:0}.resizableTextArea{border-width: 1px;border-style: solid;border-color:rgb(181, 184, 200);}
+/*show roweditor buttons even when on editing last row or adding a row:*/.x-grid-row-editor{z-index:4 !important}
+/*tab with no records*/.has-no-records>span>span>.x-tab-inner-default{color:#aaa !important}
+/*drag and drop file upload*/
+	.dd-dropzone{position:relative;border:0px !important;margin-right:30px !important;}
+	.dd-file-name{margin-left:30px;border:2px dashed #ddd !important;height:34px;}
+	
+	.dd-icon{position:absolute;top:0;left:0;width:34px;height:34px;border:0px solid #aaa;z-index:1;background:url("static/images/icons_file_types.png") -331px -141px no-repeat !important;}
+	.img-pdf{background-position:-8px -48px !important;}
+	.img-doc{background-position:-55px -48px !important;}
+	.img-xls{background-position:-100px -48px !important;}
+	.img-csv{background-position:-192px -48px !important;}
+	.img-png{background-position:-239px -94px !important;}
+	.img-gif{background-position:-285px -94px !important;}
+	.img-jpg{background-position:-331px -94px !important;}
+	.dd-progress_bar{
+		/*background:url("static/images/progress_.png") !important;*/
+	}	
+	.dd-prgr{
+		position:absolute;top:0;left:0;height:34px;width:0px;background-color:#0c0;z-index:4;
+	}
+	/*.dd-prgr.visible{display:block;}*/
+	
+#item-toolbar .x-box-inner, #item-toolbar .x-panel-body {background-color:#ccc !important}
+</style>
+</head>
+<body style="overflow:scroll-x">
+	<div id="page-messagebox"><span style='display:none' id="page-messagebox-close">x</span><div id="page-messagebox-inner"></div></div>
+	<div id="page-loader-mask"><div id="page-loader-mask-inner">
+		<img src="/static/images/loading.gif" /> Laen
+	</div></div>
+	<div id="sarv-form"></div>
+
+<script type="text/javascript">
+
+var SarvForm = ({
+	
+	// {isLocal} - flag to indicate the source of data
+	// true - data loaded when page is loaded
+	// false - data available in opener js ns
+	// isLocal: (!opener || 'undefined' === typeof opener.Sarv),
+	isLocal: (!opener || 'undefined' === typeof opener.Sarv),
+	
+	// {given} - Blueprint for opener object or local data
+	// Filled later on with data
+	given: { 
+		records: { d:[], f:[], g:{} }, 
+		form: { formFields:[], stores: { data:{}, instances:{} } },
+		conf: { popup: {} },
+		
+		// {add} (opt): -1 - prev, +1 - next page 
+ 		// {rA} (opt): index of selected row
+ 		// {a} (opt): if true, then {add} is absolute page nr
+ 		// {f} (opt): closure that fires with callback
+ 		_listGridPageTurner: function(add, rA, a, f) {
+ 			var g=Ext.getCmp('listgrid'),
+ 				s=g.store;
+ 			if(add !== null) {
+ 				var nr=a ? 0 : s.lastOptions.page;
+ 				// if rA is present while new page is loaded,
+ 				// use that rA to select active record after
+ 				// the page has been turned
+ 				// Used by child controller method 'cancel' 
+ 				// for example.
+ 				rA = (isNaN(rA) || rA === null) ? false : rA;
+ 				if(!rA)
+ 					rA = (!rA && add !== null) ? rA : null;
+ 				if(!rA || isNaN(rA))
+ 					rA = (add > 0) ? 0 : (s.pageSize-1);
+ 				s.loadPage((nr + add), {
+ 					scope: this,
+ 					callback: function() {
+ 						this._listGridPageTurner(null, rA);
+ 						if(f) {
+ 							f();
+ 						}
+ 					}
+ 				}); 				
+ 			}
+ 			if(!isNaN(rA) && rA !== null) {
+ 				g.getSelectionModel()
+ 					.select(rA);
+ 			}
+ 			return true;
+ 		},
+ 		
+		// UTILS
+ 		_d: function(i,type){
+ 	    	var t=(type||'undefined'),
+ 	    		x=(t===typeof i);
+ 	    	//if type is checkeg against undefined
+ 	    	//return inverted value
+ 	    	return t=='undefined'?(!x):x;
+ 	    },
+ 	    
+ 	   _getGridData: function(id,name) {
+			// data is present as grid records + reference - 
+			var d=[],
+				g=(this.records.g[name]||{});
+			if(Object.keys(g).length < 1)
+				return [];
+			var m=(g.m[id]||false);
+			if(!m) 
+				return [];
+			for(var i=0,n=m.length;i<n;i++){
+				try {
+					var rec={'id':m[i]};
+					for(var j=0,l=g.r[m[i]].length;j<l;j++) {// records
+						rec[ g.f[j] ] = g.r[m[i]][j];
+					}
+					d.push(rec);
+				} catch (e) {console.log(e);}
+			}
+			
+			return d;
+		}
+	},
+	
+	conf: {},
+	
+	// {message} - form messaging. Used throughout 
+	// the form lifecycle.
+	message: function(d) {
+		var o=document.getElementById('page-messagebox'),
+			i=document.getElementById('page-messagebox-inner');
+		if (d.success) {
+			o.style.backgroundColor='#bfa';
+			o.style.zIndex=100;
+			i.style.color='#5a3';
+		} 
+		if (d.error) {
+			o.style.backgroundColor='#fab';
+			o.style.zIndex=100;
+			i.style.color='#700';
+			var b=document.getElementById('page-messagebox-close');
+			b.style.display='block';
+		}
+		if (typeof d.data === 'undefined') 
+			d.data=[];
+		var h=d.message+'<ul>';
+		for(var j=0, n=d.data.length; j<n; j++)
+			h+='<li style="margin-top:5px">'+d.data[j]+'</li>';
+		i.innerHTML+=h+'</ul>';
+		o.style.display='block';
+		o.style.opacity=1;
+		var t_=this;
+		if(d.success) {
+			var t=setInterval(function(){ 
+					clearInterval(t);
+					t_.fade(o,i);
+			}, 3000);
+		}
+		d=null;
+		h=null;
+	},
+	fade: function(e,i) {
+	    var op = 1;  // initial opacity
+	    var timer = setInterval(function () {
+	        if (op <= 0.1){
+	            clearInterval(timer);
+	            e.style.filter='alpha(opacity=1)';
+	            e.style.display = 'none';
+	            i.innerHTML='';
+	        }
+	        e.style.opacity = op;
+	        e.style.filter = 'alpha(opacity=' + op * 100 + ')';
+	        op -= op * 0.1;
+	    }, 50);
+	}
+}||{});
+
+(function(s, document, window){
+
+	// * Get id from url
+	var u = document.URL.substr(
+		document.URL.lastIndexOf('/') + 1),
+		uI=u.indexOf('?');
+	
+	// Url ends with ?o but opener
+	// itself is missing or is not
+	// list(Sarv) object
+	if(uI!=-1 && (
+	'undefined' === typeof opener
+	|| 'undefined' === typeof opener.Sarv)) {
+		var wl=window.location,
+			p=wl.pathname.split('/');
+			window.location=wl.pathname.split('?')[0];
+	}
+	
+	s.isLocal=(uI==-1);
+	
+	// Local data object set on page load
+	if(s.isLocal) {
+		var d = {{data|safe}};
+		s.conf = d.conf;
+		s.given.records = d.records;
+		s.given.conf = d.conf;
+	
+	// Has parent
+	} else {
+		// Reference to parent window Sarv object
+		s.conf = opener.Sarv.form;
+		s.given = opener.Sarv;
+	}
+	
+	// If record is not found,
+	// close this window
+	try { 
+		s.conf.errors.notfound;
+		window.close();
+	} catch (e) {}
+
+	s.conf.url_end = uI!=-1 ? u.substring(0, uI) : u;
+	if(s.conf['url_end'] != 'add') {
+		// * Set record index in data array
+		if(s.isLocal) {
+			// 0 when local data scope
+			s.conf.i = 0;
+		} else /*if('undefined' === typeof s.conf.i // force set document data index
+		|| !s.conf.i)*/ {
+			if(isNaN(parseInt(s.conf.url_end))) {
+				// If invalid id from url, close the window
+				//window.close();
+			} else {
+				s.conf.i = null;
+				// Find index by id from records array
+				var col=s.given.records.f.indexOf('id');
+				var r = s.given.records.d; 
+				for(var j=0, n=r.length; j<n; j++)
+					if(parseInt(s.conf.url_end) 
+					== r[j][col]) {
+						s.conf.i = j;
+						break;
+					}
+				r=null;
+			}
+		}
+		
+		// * Set item id in curr window scope
+		var col=s.given.records.f.indexOf('id');
+		
+		var r = s.given.records.d[s.conf.i];
+		s.conf['item_id'] = r[col];
+		s.conf['opener_id'] = r[col]; 
+		
+		// * Set record owner id if specified
+		var i_own = -1 !== s.given.records.f
+			.indexOf('owner_id'),
+			r=[];
+		
+		s.conf.owner_id = i_own ? 
+			r[i_own] : false;
+	}
+	
+	var w = s.given.conf.popup;
+	window.resizeTo(w.width,w.height);
+	
+	var b=document.getElementById('page-messagebox-close');
+		closeMessageBox=function(){
+			document
+				.getElementById('page-messagebox')
+				.style.display='none';
+			document
+				.getElementById('page-messagebox-inner')
+				.innerHTML='';
+		};
+	b.addEventListener('click', closeMessageBox);
+	window.addEventListener("beforeunload", 
+		function(e){
+			// So that popup can be re-opened
+			SarvForm.forms=null;
+			if('undefined' !== typeof opener.SarvForm 
+			&& opener.SarvForm.forms)
+				opener.SarvForm.forms=null;
+			
+			// If window has opener, then remove relation
+			if('undefined' !== typeof opener
+			&& 'undefined' !== opener.Sarv.forms) {
+				opener.Sarv.forms=null;
+			}
+			
+			b.removeEventListener(closeMessageBox);
+			
+			//opener.Sarv.forms.close();
+			s.given.forms=null;
+			s.given.form.i=null;
+			s.given.form.item_id=null;
+			s.given=null;
+		}, false);
+	
+})(SarvForm,document,window);
+	
+</script>
+<script type="text/javascript" src="static/js/basket.js"></script>
+
+<script type="text/javascript">basket.remove('extjs');basket.remove('sarvform');/**/basket.require({url:'static/js/Sarv/build/production/SarvForm/app.js',key:'extjs', skipCache: true})/*.then(function(){basket.require({url:'static/js/sarvform.js',key:'sarvform', skipCache: true})},function(e){console.log(e);});*/</script>
+
+<!-- script type="text/javascript" src="static/js/ext-5.0.0/ext-all.js"></script><script type="text/javascript" src="static/js/Sarv/SarvForm/app.js"></script> -->
+<!----><script type="text/javascript">/*function pl(){var a=(new Date()).getTime(),s=(a-b)/1000;document.title=document.title+"|Page load:"+s+" seconds.";}
+window.onload=function(){pl();}*/</script><!---->
+</body>
+</html>

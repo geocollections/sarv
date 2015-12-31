@@ -1,0 +1,74 @@
+.grey {
+    color: #bababa !important;
+}
+
+body {
+    background: #57634C url("/static/images/bg.png") repeat-x;
+	/*background-image: -moz-linear-gradient(0% 100% 90deg,#57634C, #C0C0C0);*/ /* for firefox 3.6+ */
+}
+
+.x-panel-body {
+	background-color: #efefef;
+}
+
+/*.x-toolbar-ct {
+	background-color: #aaaaaa;
+}*/
+
+/* Icons */
+
+.page-add {
+	background-image: url("/static/images/page_add.png") !important;
+}
+
+.page-delete {
+	background-image: url("/static/images/page_delete.png") !important;
+}
+
+.page-save {
+	background-image: url("/static/images/page_save.png") !important;
+}
+
+.page-save-as {
+	background-image: url("/static/images/page_save.png") !important;
+}
+
+.row-add {
+	background-image: url("/static/images/add.png") !important;
+}
+
+.row-delete {
+	background-image: url("/static/images/delete.png") !important;
+}
+
+.refresh {
+	background-image: url("/static/images/arrow_refresh.png") !important;
+}
+
+.search {
+	background-image: url("/static/images/magnifier.png") !important;
+}
+
+.previous {
+	background-image: url("/static/images/resultset_previous.png") !important;
+}
+
+.next {
+	background-image: url("/static/images/resultset_next.png") !important;
+}
+
+.disabled {
+	background: transparent;
+	border: none;
+	color: gray;
+}
+
+.user {
+	background: url("/static/images/user.png") no-repeat left center;
+	padding-left: 20px;
+}
+
+.database {
+	background: url("/static/images/database.png") no-repeat left center;
+	padding-left: 20px;
+}

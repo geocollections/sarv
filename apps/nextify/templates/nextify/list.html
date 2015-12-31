@@ -1,0 +1,46 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+<head>
+<!----><script type="text/javascript">before=(new Date()).getTime();</script><!---->
+    <!-- <link rel="stylesheet" type="text/css" href="static/js/ext-4.1.1a/resources/css/ext-all-gray.css" /> -->
+    <link rel="stylesheet" type="text/css" href="static/js/app/resources/css/ext-all-gray.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+<style type="text/css">
+<!--
+body {overflow:hidden;}
+#page-loader-mask{width:100%;height:100%;position:absolute;top:0;left:0;background-color:#fff;opacity:.5;}#page-loader-mask-inner{position:fixed;top:46%;left:46%;width:120px;height:20px;opacity:1}
+-->
+</style>
+</head>
+
+<body>
+
+<div id="page-messagebox" style="position:fixed;top:10px;left:10px;display:none;z-index:100">
+	<div id="page-messagebox-inner" style="margin:10px;font-size:14px;">Message</div>
+</div>
+<div id="page-loader-mask">
+	<div id="page-loader-mask-inner"><img src="/static/images/loading.gif" /> Laen</div>
+</div>
+
+<script type="text/javascript" src="static/js/app/ext-all-4.0.1.js"></script>
+<script type="text/javascript" src="static/js/app/app.js"></script>
+
+<script type="text/javascript">
+
+	Ext.define('Sarv.conf', {{data|safe}}||{});
+
+	window.onbeforeunload = function(){
+		try{
+			if(Sarv.forms!=null)
+				Sarv.forms.close();
+		}catch(e){
+			
+		}
+	};
+</script>
+	
+<script type="text/javascript">var extifypage = false;</script>
+<!--<script type="text/javascript">function pageload(){var after=(new Date()).getTime(),sec=(after-before)/1000;document.title=document.title+"Page. load:"+sec+" seconds."; }window.onload=function (){pageload();}</script>-->
+
+</body>
+</html>

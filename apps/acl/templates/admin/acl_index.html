@@ -1,0 +1,69 @@
+{# extends "admin/base_site.html" #}
+
+{% block not_django_admin_context_1 %}
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+{% endblock %}
+
+{% block extrahead %} {# from admin/base.html #}
+<link rel="stylesheet" href="/static/admin/css/jquery-ui.css" />
+<script type="text/javascript" src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script>window.jQuery||document.write('<script src="/static/admin/js/jquery-1.10.2.min.js"><\/script>')</script>
+<script src="/static/admin/js/jquery-ui.js"></script>
+<script>window.jQuery||document.write('<script src="/static/admin/js/jquery-ui.js"><\/script>')</script>
+
+<script type="text/javascript" src="static/acl.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.closed-btn').click(function(){ $(this).siblings('.closed').toggle(); });
+});
+
+acl.data = {{data|safe}};
+acl.rightsgroups = [{% for right in rightsgroups %}'{{right.name}}',{% endfor%}];
+acl.col_names = {{col_names|safe}};
+</script>
+
+{% endblock %}
+
+{% block not_django_admin_context_2 %} <title> {% endblock %}
+
+{% block title %}ACL administration{% endblock %}
+
+{% block not_django_admin_context_3 %}
+</title>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+.closed-btn { cursor:pointer; }
+.closed { display:none; }
+#acl-rights-wrapper {}
+.col_header {font-weight:bold}
+
+</style>
+
+{% block not_django_admin_context_4 %}<div style="margin:10px">{% endblock %}
+
+<div>
+	<div style="position:fixed;top:0;background-color:#fff;width:100%">
+		<select name="actors" onchange="acl.render($(this).val())" style="font-size:16px;">
+			{% for item in users %}<option value="{{item}}">{{item}}</option>{% endfor %}
+		</select>
+	</div>
+	<div id="acl-rights-wrapper" style="margin-top:40px;">
+		<div id="acl-rights-grid"> </div>
+	</div>
+</div>
+
+{% block not_django_admin_context_5 %}</div>{% endblock %}
+
+<script type="text/javascript">
+	acl.render(acl.data.users[0]);
+	$('[name="actors"]').val(acl.data.users[0]);
+</script>
+{% endblock %}
