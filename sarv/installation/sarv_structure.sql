@@ -36,18 +36,6 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
---
--- Dumping data for table `django_migrations`
---
-
-INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
-(1, 'nextify', '0001_initial', '2015-12-30 18:54:48'),
-(2, 'acl', '0001_initial', '2015-12-30 18:54:48'),
-(3, 'nextify', '0002_page_fk_to_acl', '2015-12-30 18:54:48'),
-(4, 'contenttypes', '0001_initial', '2015-12-30 18:54:48'),
-(5, 'contenttypes', '0002_remove_content_type_name', '2015-12-30 18:54:48');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `sarv_acl`
@@ -239,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `sarv_menu` (
   `column` int(11) DEFAULT NULL,
   `row` int(11) DEFAULT NULL,
   `page_id` int(11),
-  `usergroup_id` int(11),
+  `usergroup_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sarv_menu_1a63c800` (`page_id`),
   KEY `sarv_menu_50ce08ac` (`usergroup_id`)
