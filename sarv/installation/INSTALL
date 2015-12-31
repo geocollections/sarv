@@ -14,11 +14,8 @@ I. ENVIRONMENT
 
 II. FILES
 
-1. Download project files to specified location:
-1.1 Download project files, "sarv" git: 
+1. Download project files to project location in server:
 "git clone https://github.com/geocollections/sarv.git"
-1.2 Create "apps" folder and go to "apps"
-1.3 git clone other apps (acl,custom,menu,nextify,user_feedback) into "apps" folder
 
 2. Add local_settings.py file to project ("sarv") folder
 
