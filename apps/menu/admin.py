@@ -34,26 +34,9 @@ class MenuAdmin(object):
         pages_qs = Page.objects.filter(language=settings.LANGUAGE_CODE)
         pages = {item.pk:item for item in pages_qs}
         menu_qs = Menu.objects.filter(usergroup_id__isnull=True)\
-                    .order_by('column','row','usergroup__pk')
+                    .order_by('column','row','usergroup__pk')    
         z = {item.page_id:item for item in menu_qs}
-        """
-        output={}
-        i=0
-        for k,item in pages.items():
-            margs = {'id':z[k].id,'column':z[k].column,'row':z[k].row} if k in z \
-                     else {'id':'p%s'%k,'column':0,'row':25+i}
-            o = Menu(**margs)
-            o.page_id = k
-            o.active = 'Y' if k in z is not None else 'N'
-            o.url = item.url
-            o.name = item.name
-            if not o.column in output: 
-                output.update({o.column:{}})
-            if o.row in output[o.column]:
-                output[o.column].update({o.row:{}})
-            output[o.column].update({o.row:o})
-            i+=1
-        """ 
+        
         output={}
         i=0
         for k,item in pages.items():
@@ -70,7 +53,6 @@ class MenuAdmin(object):
                 output[o.column].update({o.row:{}})
             output[o.column].update({o.row:o})
             i+=1 
-       
         return render_to_response(
             "menu/menu-admin.html" if only_list is False else "menu/menu-admin_list.html",
             {'menu_list':output, 'institutions':institutions, 'num_columns':len(output)},
@@ -239,6 +221,8 @@ class MenuAdmin(object):
         if len(input_data) > 0:
             row = Page(name=input_data['name'], language=settings.LANGUAGE_CODE, visibility='acl')
             row.save()
+            menu = Menu(column=1,row=Menu.objects.filter(column=1).count(),page_id=row.pk)
+            menu.save()
             response_data = {
                 'f':False,
                 'reload':'glist',
@@ -254,7 +238,7 @@ class MenuAdmin(object):
         if len(input_data['name']) > 0:
             colname = Page(name=input_data['name'], language=settings.LANGUAGE_CODE, visibility='acl')
             colname.save()
-            column = Menu(page=colname, row=0, column=int(input_data['num_columns']))
+            column = Menu(page=colname, row=0, column=Menu.objects.filter(row=0,usergroup_id__isnull=True).count()+1)#int(input_data['num_columns'])+1)
             column.save()
             response_data = {
                 'f':False,
